@@ -1,8 +1,11 @@
 package com.notificapara.beneficio_service.controller;
 
 import com.notificapara.beneficio_service.model.Beneficio;
-import com.notificapara.beneficio_service.repository.BeneficioRepository;
+import com.notificapara.beneficio_service.service.BeneficioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,16 +15,17 @@ import java.util.List;
 @RequestMapping("/beneficios")
 public class BeneficioController {
 
-    private final BeneficioRepository beneficioRepository;
+    private final BeneficioService beneficioService;
 
     @GetMapping
     public List<Beneficio> listarTodos() {
-        return beneficioRepository.findAll();
+        return beneficioService.listarTodos();
     }
 
     @PostMapping
-    public Beneficio salvar(@RequestBody Beneficio beneficio) {
-        return beneficioRepository.save(beneficio);
+    public ResponseEntity<Beneficio> criar(@Valid @RequestBody Beneficio beneficio) {
+        Beneficio salvo = beneficioService.salvar(beneficio);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
 }
