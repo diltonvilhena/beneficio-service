@@ -1,6 +1,10 @@
 package com.notificapara.beneficio_service.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,19 +23,20 @@ public class Beneficio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Nome do benefício é obrigatório")
     private String nomeBeneficio;
 
-    @Column(nullable = false)
+    @Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos")
     private String cpfBeneficiario;
 
-    @Column(nullable = false)
+    @NotNull(message = "Valor não pode ser nulo")
+    @DecimalMin(value = "0.01", message = "Valor deve ser maior que zero")
     private BigDecimal valor;
 
-    @Column(nullable = false)
+    @NotNull(message = "Data de concessão é obrigatória")
     private LocalDate dataConcessao;
 
-    @Column(nullable = false)
-    private String origem; // Ex: "Renda Pará", "Bolsa Alimentação"
+    @NotBlank(message = "Origem é obrigatória")
+    private String origem; 
 
 }
