@@ -1,18 +1,30 @@
 package com.notificapara.beneficio_service.dto;
 
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.notificapara.beneficio_service.model.Beneficio;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record BeneficioRequestDTO(
-        @NotBlank String nomeBeneficio,
-        @NotBlank @Size(min = 11, max = 11) String cpfBeneficiario,
-        @NotNull @DecimalMin("0.01") BigDecimal valor,
-        @NotNull LocalDate dataConcessao,
-        @NotBlank String origem
-) {}
+@Getter
+@Setter
+public class BeneficioRequestDTO {
+
+    private String nomeBeneficio;
+    private String cpfBeneficiario;
+    private BigDecimal valor;
+    private LocalDate dataConcessao;
+    private String origem;
+
+    public Beneficio toEntity() {
+        Beneficio beneficio = new Beneficio();
+        beneficio.setNomeBeneficio(this.nomeBeneficio);
+        beneficio.setCpfBeneficiario(this.cpfBeneficiario);
+        beneficio.setValor(this.valor);
+        beneficio.setDataConcessao(this.dataConcessao);
+        beneficio.setOrigem(this.origem);
+        return beneficio;
+    }
+}
