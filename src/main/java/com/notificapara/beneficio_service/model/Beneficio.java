@@ -1,20 +1,15 @@
 package com.notificapara.beneficio_service.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "beneficios")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Beneficio {
@@ -23,20 +18,19 @@ public class Beneficio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome do benefício é obrigatório")
+    @Column(name = "nome_beneficio", nullable = false, length = 100)
     private String nomeBeneficio;
 
-    @Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos")
+    @Column(name = "cpf_beneficiario", nullable = false, length = 11)
     private String cpfBeneficiario;
 
-    @NotNull(message = "Valor não pode ser nulo")
-    @DecimalMin(value = "0.01", message = "Valor deve ser maior que zero")
+    @Column(name = "valor", nullable = false)
     private BigDecimal valor;
 
-    @NotNull(message = "Data de concessão é obrigatória")
+    @Column(name = "data_concessao", nullable = false)
     private LocalDate dataConcessao;
 
-    @NotBlank(message = "Origem é obrigatória")
-    private String origem; 
+    @Column(name = "origem", nullable = false, length = 100)
+    private String origem;
 
 }
