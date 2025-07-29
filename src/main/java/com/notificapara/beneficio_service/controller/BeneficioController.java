@@ -1,6 +1,7 @@
 package com.notificapara.beneficio_service.controller;
 
-import com.notificapara.beneficio_service.model.Beneficio;
+import com.notificapara.beneficio_service.dto.BeneficioRequestDTO;
+import com.notificapara.beneficio_service.dto.BeneficioResponseDTO;
 import com.notificapara.beneficio_service.service.BeneficioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,13 @@ public class BeneficioController {
     private final BeneficioService beneficioService;
 
     @GetMapping
-    public List<Beneficio> listarTodos() {
+    public List<BeneficioResponseDTO> listarTodos() {
         return beneficioService.listarTodos();
     }
 
     @PostMapping
-    public ResponseEntity<Beneficio> criar(@Valid @RequestBody Beneficio beneficio) {
-        Beneficio salvo = beneficioService.salvar(beneficio);
+    public ResponseEntity<BeneficioResponseDTO> criar(@Valid @RequestBody BeneficioRequestDTO dto) {
+        BeneficioResponseDTO salvo = beneficioService.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
