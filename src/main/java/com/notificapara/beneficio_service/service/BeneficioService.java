@@ -1,9 +1,11 @@
 package com.notificapara.beneficio_service.service;
 
+import com.notificapara.beneficio_service.dto.BeneficioRequestDTO;
 import com.notificapara.beneficio_service.dto.BeneficioResponseDTO;
 import com.notificapara.beneficio_service.model.Beneficio;
 import com.notificapara.beneficio_service.repository.BeneficioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +15,15 @@ import java.util.List;
 public class BeneficioService {
 
     private final BeneficioRepository beneficioRepository;
+    private final StreamBridge streamBridge;
 
-    public Beneficio salvar(Beneficio beneficio) {
-        return beneficioRepository.save(beneficio);
+    public Beneficio salvar(BeneficioRequestDTO dto) {
+        Beneficio beneficio = dto.toEntity();
+        Beneficio salvo = beneficioRepository.save(beneficio);
+
+        streamBridge.send("enviarBeneficio-out-0",salvo);
+
+        return beneficioRepository.save(salvo);
     }
 
     public List<BeneficioResponseDTO> listarTodos() {
