@@ -25,7 +25,7 @@ public class BeneficioController {
 
     @PostMapping
     public ResponseEntity<BeneficioResponseDTO> criar(@RequestBody BeneficioRequestDTO dto) {
-        Beneficio salvo = beneficioService.salvar(dto.toEntity());
+        Beneficio salvo = beneficioService.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new BeneficioResponseDTO(salvo));
     }
 
