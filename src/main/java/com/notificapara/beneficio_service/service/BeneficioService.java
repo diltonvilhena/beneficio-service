@@ -18,12 +18,13 @@ public class BeneficioService {
     private final StreamBridge streamBridge;
 
     public Beneficio salvar(BeneficioRequestDTO dto) {
-        Beneficio beneficio = dto.toEntity();
-        Beneficio salvo = beneficioRepository.save(beneficio);
+        Beneficio salvo = beneficioRepository.save(dto.toEntity());
+        enviarParaKafka(salvo);
+        return salvo;
+    }
 
-        streamBridge.send("enviarBeneficio-out-0",salvo);
-
-        return beneficioRepository.save(salvo);
+    private void enviarParaKafka(Beneficio salvo) {
+        streamBridge.send("enviarBeneficio-out-0", salvo);
     }
 
     public List<BeneficioResponseDTO> listarTodos() {
